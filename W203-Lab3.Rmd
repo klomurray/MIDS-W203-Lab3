@@ -11,7 +11,11 @@ setwd("/Users/klomurray/Desktop/Course Materials/Statistics/Lab3")
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 crime<-read.csv("crime_v2.csv", stringsAsFactors = FALSE)
+
 ```
+
+
+
 
 ```{r}
 nrow(crime)
@@ -26,6 +30,11 @@ nrow(crime)
 ```
 
 ```{r}
+summary(crime)
+```
+
+
+```{r}
 length(unique(crime$county))
 ```
 
@@ -37,8 +46,26 @@ print(subset(crime, county==193))
 ```
 
 ```{r}
+
 crime <- crime[!duplicated(crime),]
 nrow(crime)
+
 ```
 
-According to the internet, NC has 100 counties so some counties appear to be missing.  
+According to the internet, NC has 100 counties so some counties appear to be missing. Question: Is there any pattern to the missing counties such as regions missing?
+
+```{r}
+library(reshape2)
+library(ggplot2)
+meltData<-melt(crime)
+
+p <- ggplot(meltData, aes(factor(variable), value)) 
+p + geom_boxplot() + facet_wrap(~variable, scale="free")
+
+
+```
+
+Reviewing the boxplot some variables have outliers that should be investigated. These include urban, west, and wser. 
+
+
+
